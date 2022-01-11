@@ -16,7 +16,6 @@ def main():
     N = int(sys.argv[3])     # Number of hits wanted
     P = float(sys.argv[4])   # Total pseudocounts
 
-    # a)
     # Loading sequences into memory
     genome_seq = get_single_sequence(G)
     motif_sequences = get_multiple_sequences(M)
@@ -30,41 +29,24 @@ def main():
     PFM = calculate_PFM(motif_sequences); consensus = find_consensus(PFM)
     PPM, PWM, IC = calculate_matrices(PFM, P, background_freq)
 
-    # b)
+ 
     print("Genome length: %d" % len(genome_seq))
-
-    # c)
     print("Number of sequences: %d" % len(motif_sequences))
     print("Motif lenght: %d" % X)
-
-    # f)
     print("Motif consensus: %s" % consensus)
-
-    # d)
     print("\nBackground frequencies:"); print(background_freq)
-
-    # e)
     print("\nPositional Frequency Matrix"); print(pd.DataFrame(data=PFM, index=NUCLEOTIDES, columns=COL))
-
-    # h)
     print("\nPositional Probability Matrix"); print(pd.DataFrame(data=PPM, index=NUCLEOTIDES, columns=COL))
-
-    # i)
     print("\nPositional Weight Matrix"); print(pd.DataFrame(data=matrix_with_sum(PWM), index=NUCLEOTIDES_SUM, columns=COL))
-
-    # j)
+    
     IC = matrix_with_sum(IC)
     print("\nInformation Content"); print(pd.DataFrame(data=IC, index=NUCLEOTIDES_SUM, columns=COL))
 
-    # k)
     total_information = sum(IC[4,:])
     print("\nTotal Information Content: %f" % total_information)
 
-    # l)
-    # m)
+    # Scanning genome
     top_motifs = scan_genome(genome_seq, PWM, X, N)
-
-    # n)
     print("\nTop %d sequences found:\n" % N)
     print_results(top_motifs, N)
 
